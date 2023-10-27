@@ -1,5 +1,5 @@
 <?php
-require_once("library.php")
+require_once("library.php");
 ?>
 
 <!DOCTYPE html>
@@ -42,40 +42,45 @@ require_once("library.php")
 
     echo " <p>Bienvenu à l'ulb !</p>";
 
-    fUnite($connecte);
 
-    echo " <p>********** Menu ***********</p>";
+    afficheUnite($connecte);
+
+
+
+    //echo " <p>********** Menu ***********</p>";
 
     // Utilisez un formulaire HTML avec des boutons cliquables
+    /*
     echo '<form method="post" action="">';
     echo ' <p>Sélectionnez une option :</p>';
     echo ' <input type="submit" name="choix" value="1"> Lister les responsables <br>';
     echo ' <input type="submit" name="choix" value="2"> Lister des projets <br>';
     echo ' <input type="submit" name="choix" value="3"> Lister des personnes travaillant dans cette unité <br>';
     echo ' <input type="submit" name="choix" value="4"> Quitter';
-    echo '</form>';
+    echo '</form>';*/
 
     // Traitement de l'entrée de l'utilisateur après avoir soumis le formulaire
+    /*
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $choix = $_POST['choix'];
 
         switch ($choix) {
             case 1:
                 //echo " <p>Lister les responsable </p>";
-                fChercheur($connecte);
+                afficheChercheur($connecte);
                 break;
             case 2:
                 //echo " <p>Lister des projet</p>";
-                fProjet($connecte);
+                afficheProjet($connecte);
                 break;
             case 3:
                 //echo " <p>Lister des personnes travaillant dans cette unité</p>";
-                fUchercheur($connecte);
+                afficheUchercheur($connecte);
                 break;
             default:
                 echo " <p>fin.</p>";
         }
-    }
+    }*/
 
     ?>
 

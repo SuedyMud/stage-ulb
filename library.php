@@ -1,7 +1,8 @@
 <?php
 
 
-function fUnite($connecte)
+
+function afficheUnite($connecte)
 {
 
     // vérification de la connexion est établie avant d'exécuter une requête SQL
@@ -14,50 +15,20 @@ function fUnite($connecte)
 
         // Traitez les résultats ici, par exemple :
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo "ID : " . $row['id'] . ", 
-                  Nom Unité : " . $row['nomUnite'] . ",  
-                  Description : " . $row['description'] . "<br>";
+            echo "<a href=pageUnite.php?idUnite=" . $row["id"] . ">" .
+
+
+                "Nom Unité : " . $row['nomUnite'] . ", 
+                  
+                  
+                  Description : " . $row['description'] . "<br></a>";
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
     }
-
-    /*
-    echo " <p>********** Menu ***********</p>";
-
-    // Utilisez un formulaire HTML avec des boutons cliquables
-    echo '<form method="post" action="">';
-    echo ' <p>Sélectionnez une option :</p>';
-    echo ' <input type="submit" name="choix" value="1"> Lister les responsables <br>';
-    echo ' <input type="submit" name="choix" value="2"> Lister des projets <br>';
-    echo ' <input type="submit" name="choix" value="3"> Lister des personnes travaillant dans cette unité <br>';
-    echo ' <input type="submit" name="choix" value="4"> Quitter';
-    echo '</form>';
-
-    // Traitement de l'entrée de l'utilisateur après avoir soumis le formulaire
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $choix = $_POST['choix'];
-
-        switch ($choix) {
-            case 1:
-                //echo " <p>Lister les responsable </p>";
-                fChercheur($connecte);
-                break;
-            case 2:
-                //echo " <p>Lister des projet</p>";
-                fProjet($connecte);
-                break;
-            case 3:
-                //echo " <p>Lister des personnes travaillant dans cette unité</p>";
-                fUchercheur($connecte);
-                break;
-            default:
-                echo " <p>fin.</p>";
-        }
-    }*/
 }
 
-function fChercheur($connecte)
+function afficheChercheur($connecte)
 {
 
     if ($connecte) {
@@ -80,7 +51,7 @@ function fChercheur($connecte)
 }
 
 
-function fProjet($connecte)
+function afficheProjet($connecte)
 {
     // vérification de la connexion est établie avant d'exécuter une requête SQL
     if ($connecte) {
@@ -92,11 +63,12 @@ function fProjet($connecte)
 
         // Traitez les résultats ici, par exemple :
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo "ID : " . $row['id'] . ", 
-                        Nom : " . $row['nomProjet'] . ", 
+            echo "<a href=pageProjet.php?idProjet=" . $row["id"] . ">" .
+
+                "Nom : " . $row['nomProjet'] . ", 
                         Date Fin : " . $row['dateDebut'] . ",
                         Date Fin : " . $row['dateFin'] . ",
-                        Description : " . $row['description'] . "<br>";
+                        Description : " . $row['description'] . "<br></a>";
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
@@ -104,7 +76,7 @@ function fProjet($connecte)
 }
 
 
-function fPchercheur($connecte)
+function affichePchercheur($connecte)
 {
 
     // vérification de la connexion est établie avant d'exécuter une requête SQL
@@ -127,7 +99,7 @@ function fPchercheur($connecte)
 }
 
 
-function fUprojet($connecte)
+function afficheUprojet($connecte)
 {
 
     // vérification de la connexion est établie avant d'exécuter une requête SQL
@@ -149,12 +121,14 @@ function fUprojet($connecte)
 }
 
 
-function fUchercheur($connecte)
+function afficheUchercheur($connecte, $valeurIdUnite)
 {
+
+
 
     // vérification de la connexion est établie avant d'exécuter une requête SQL
     if ($connecte) {
-        $sql = "SELECT idChercheur, idUnite, resp FROM uchercheur ";
+        $sql = "SELECT idChercheur, idUnite, resp FROM uchercheur where idUnite='$valeurIdUnite'";
         $result = $connecte->query($sql);
 
         echo "<p> Voici la liste des uchercheurs : <p>";
