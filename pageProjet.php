@@ -23,6 +23,8 @@ require_once("library.php");
     $username = "root";
     $password = "";
 
+    $valeurIdProjet =  $_GET['idProjet'];
+
     try {
         $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
 
@@ -34,7 +36,7 @@ require_once("library.php");
     }
 
     afficheChercheur($connecte);
-    affichePchercheur($connecte);
+    affichePchercheur($connecte, $valeurIdProjet);
 
     ?>
 
