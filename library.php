@@ -31,7 +31,7 @@ function afficheChercheur($connecte)
 {
 
     if ($connecte) {
-        $sql = "SELECT nom, prenom 
+        $sql = "SELECT id, nom, prenom 
                 FROM chercheur 
                 where status='responsable'";
 
@@ -42,7 +42,8 @@ function afficheChercheur($connecte)
 
         // Traitez les résultats ici, par exemple :
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo $row['nom'] . " " . $row['prenom'] . "<br>";
+            echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] . ">" .
+                $row['nom'] . " " . $row['prenom'] . "<br> </a>";
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
@@ -50,11 +51,45 @@ function afficheChercheur($connecte)
 }
 
 
-function afficheProjet($connecte)
+
+function afficheDetailChercheur($connecte, $valeurIdChercheur)
+{
+
+    if ($connecte) {
+        $sql = "SELECT id, nom, prenom, status 
+                FROM chercheur 
+                WHERE id='$valeurIdChercheur'";
+
+        $result = $connecte->query($sql);
+
+        echo "<p> Voici la liste détaillée des chercheur : <p>";
+
+
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            echo "Id : " . $row["id"] . ",
+                Nom : " . $row['nom'] . ", 
+                Prénom : " . $row['prenom'] . ",
+                status : " . $row['status'] . "<br></a>";
+        }
+    } else {
+        echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
+    }
+}
+
+
+function afficheProjet($connecte, $valeurIdUnite)
 {
     // vérification de la connexion est établie avant d'exécuter une requête SQL
     if ($connecte) {
-        $sql = "SELECT id FROM projet";
+        $sql = "SELECT p.id, p.nomProjet 
+                FROM projet p, uprojet up 
+                WHERE p.id=up.idProjet and up.idUnite='$valeurIdUnite'";
+
+        /*"SELECT c.id, c.nom , c.prenom 
+                FROM chercheur c, uchercheur u 
+                where c.id = u.idChercheur and u.idUnite = '$valeurIdUnite'";*/
+
+
         $result = $connecte->query($sql);
 
         echo "<p> Voici la liste des projets : <p>";
@@ -64,7 +99,10 @@ function afficheProjet($connecte)
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             echo "<a href=pageProjet.php?idProjet=" . $row["id"] . ">" .
 
-                "Projet : " . $row['id']  . "<br></a>";
+                $row['nomProjet']  . "<br></a>";
+
+            /* echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] . ">" .
+                $row['nom'] . " " . $row['prenom'] . "<br> </a>";*/
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
@@ -77,21 +115,21 @@ function affichePchercheur($connecte, $valeurIdProjet)
 
     // vérification de la connexion est établie avant d'exécuter une requête SQL
     if ($connecte) {
-        $sql = "SELECT c.nom, c.prenom
+        $sql = "SELECT c.id, c.nom, c.prenom
                 FROM pchercheur pc
                 INNER JOIN chercheur c ON pc.idChercheur=c.id 
                 WHERE pc.idProjet='$valeurIdProjet'";
 
         $result = $connecte->query($sql);
 
-        echo "<p> Voici la liste des pchercheurs : <p>";
+        echo "<p> Voici la liste des chercheurs : <p>";
 
 
         // Traitez les résultats ici, par exemple :
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo $row['nom'] . " " . $row['prenom'] . "<br>";
 
-            //echo  $row['nom'] . " " . $row['prenom'] . "<br>";
+            echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] . ">" .
+                $row['nom'] . " " . $row['prenom'] . "<br> </a>";
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
@@ -130,7 +168,7 @@ function afficheUchercheur($connecte, $valeurIdUnite)
     // vérification de la connexion est établie avant d'exécuter une requête SQL
     if ($connecte) {
         // $sql = "SELECT idChercheur FROM uchercheur where idUnite='$valeurIdUnite'";
-        $sql = "SELECT c.nom , c.prenom 
+        $sql = "SELECT c.id, c.nom , c.prenom 
                 FROM chercheur c, uchercheur u 
                 where c.id = u.idChercheur and u.idUnite = '$valeurIdUnite'";
 
@@ -141,7 +179,10 @@ function afficheUchercheur($connecte, $valeurIdUnite)
 
         // Traitez les résultats ici, par exemple :
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo  $row['nom'] . " " . $row['prenom'] . "<br>";
+            //echo  $row['nom'] . " " . $row['prenom'] . "<br>";
+
+            echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] . ">" .
+                $row['nom'] . " " . $row['prenom'] . "<br> </a>";
         }
     } else {
         echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";

@@ -8,14 +8,14 @@ require_once("library.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Unite</title>
+    <title>Page Chercheur</title>
 </head>
 
 <body>
 
 
     <?php
-    //echo "UNITE  " . $_GET['idUnite'];
+    //echo "PROJET  " . $_GET['idProjet'];
 
     $servername = "localhost";
     $database = "ulb";
@@ -23,11 +23,7 @@ require_once("library.php");
     $username = "root";
     $password = "";
 
-    $valeurIdUnite =  $_GET['idUnite'];
-
-    //$valeurIdProjet =  $_GET['idProjet'];
-
-
+    $valeurIdChercheur =  $_GET['idChercheur'];
 
     try {
         $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
@@ -39,11 +35,8 @@ require_once("library.php");
         echo "La connexion a échoué : " . $e->getMessage();
     }
 
-    afficheChercheur($connecte);
-    afficheProjet($connecte, $valeurIdUnite);
-    afficheUchercheur($connecte, $valeurIdUnite);
+    afficheDetailChercheur($connecte, $valeurIdChercheur);
 
-    //echo "$valeurIdUnite";
 
     ?>
 
