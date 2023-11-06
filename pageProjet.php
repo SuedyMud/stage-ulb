@@ -9,41 +9,35 @@ require_once("library.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Projet</title>
+
+    <!-- Ajoutez les liens vers les fichiers Bootstrap CSS et JavaScript -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 
 
     <?php
-    //echo "PROJET  " . $_GET['idProjet'];
-
-    $servername = "localhost";
-    $database = "ulb";
-
-    $username = "root";
-    $password = "";
 
     $valeurIdProjet =  $_GET['idProjet'];
 
-    try {
-        $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-
-        // Définir le mode d'erreur PDO sur exception
-        $connecte->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo " Connecté avec succès";
-    } catch (PDOException $e) {
-        echo "La connexion a échoué : " . $e->getMessage();
-    }
-
-    afficheChercheur($connecte);
+    afficheDetailProjet($connecte, $valeurIdProjet);
+    affichePchercheurResponsable($connecte, $valeurIdProjet);
     affichePchercheur($connecte, $valeurIdProjet);
+
 
     ?>
 
-
-
-
-
 </body>
+
+<footer>
+    <p>
+        ULB Université libre de bruxelles
+    </p>
+
+</footer>
 
 </html>
