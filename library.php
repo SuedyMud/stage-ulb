@@ -85,10 +85,7 @@ function afficheChercheurResponsable($connecte, $valeurIdUnite)
 
         $result = $connecte->query($sql);
 
-        /*echo "<br> \n" . "Responsable : " .
-                "<a href=pageChercheur.php?idChercheur=" . $row['id'] . "&idProjet=" . $valeurIdProjet . ">" .
-                $row['nom'] . " " . $row['prenom'] . "<br> </a>" . "<br> \n";
-        }*/
+
 
 
         // Traitez les résultats ici, par exemple :
@@ -110,9 +107,6 @@ function afficheChercheur($connecte)
                 FROM chercheur
                 WHERE status='responsable'";
 
-        /*"SELECT c.id, c.nom , c.prenom 
-                FROM chercheur c, uchercheur u 
-                where c.id = u.idChercheur and u.idUnite = '$valeurIdUnite'";*/
 
         $result = $connecte->query($sql);
 
@@ -352,10 +346,6 @@ function afficheUchercheurAppartient($connecte, $valeurIdUnite)
     if ($connecte) {
         // $sql = "SELECT idChercheur FROM uchercheur where idUnite='$valeurIdUnite'";
 
-        /*SELECT pc.nomProjet
-                FROM pchercheur pc
-                INNER JOIN chercheur c ON pc.idProjet=c.id 
-                WHERE pc.idChercheur='$valeurIdChercheur' AND pc.resp =''";*/
 
         $sql = "SELECT p.id
                 FROM projet p,

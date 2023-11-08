@@ -1,6 +1,5 @@
 <?php
 require_once("library.php");
-require_once("accesDB.php");
 ?>
 
 <!DOCTYPE html>
@@ -71,10 +70,10 @@ require_once("accesDB.php");
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.php">ULB</a></li>
+                    <li><a href="index.php">ULB</a></li>
                     <li><a href="pageUnite.php">A propos</a></li>
                     <li><a href="pageProjet.php">Projets</a></li>
-                    <li><a href="pageContact.php">Contact</a></li>
+                    <li class="active"><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -96,81 +95,40 @@ require_once("accesDB.php");
 
                 <?php
 
-                //-> Accès DB <---------------------------------------------------------------------------------------------------------------------------------------
+                /*
+                //afficheUnite($connecte);
 
-                connexionDB($connecte);
+                //configuration de la base de donnnée
+                $servername = "localhost";
+                $database = "ulb";
 
-                $valeurIdChercheur = $_GET['idChercheur'];
-                $valeurIdProjet = $_GET['idProjet'];
-                $valeurIdUnite = $_GET['idUnite'];
+                $username = "root";
+                $password = "";
 
+                //$servername = "localhost";
+                //$database = "id21452387_ulb";
 
-                //--> affichage des informations détaillé du chercheur <------------------------------------------------------------------------------------------------
-
-                if ($connecte) {
-                    $sql = "SELECT id, nom, prenom, status 
-                            FROM chercheur 
-                            WHERE id='$valeurIdChercheur'";
-
-                    $result = $connecte->query($sql);
-
-                    echo "<p> Données Personnelle du chercheur : <p>";
+                //$username = "id21452387_suedy";
+                //$password = "Gedeon1996@";
 
 
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                        echo $row["id"] . "<br> \n" .
-                            $row['nom'] . "<br> \n" .
-                            $row['prenom'] . "<br> \n" .
-                            $row['status'] . "<br> \n";
-                    }
-                } else {
-                    echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
-                }
+
+                try {
+                    $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+
+                    // Définir le mode d'erreur PDO sur exception
+                    $connecte->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    //echo "Connecté avec succès";
+                } catch (PDOException $e) {
+                    echo "La connexion a échoué : " . $e->getMessage();
+                }*/
 
 
-                //--> Appartient au projet <-------------------------------------------------------------------------------------------------------------------------------
 
-                if ($connecte) {
-                    $sql = "SELECT distinct p.id, p.nomProjet
-                            FROM projet p, pchercheur pc 
-                            WHERE p.id = '$valeurIdProjet'";
+                echo "<p>Corrdonnée de l'école : </p>";
+                echo "<p>numéro : 041234567</p>";
+                echo "<p>email : ulb.yopmail.com</p>";
 
-                    $result = $connecte->query($sql);
-
-                    echo "<p> Appartient au projet : <p>";
-
-
-                    // Traitez les résultats ici, par exemple :
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-
-                        echo "<a href=pageProjet.php?idProjet=" . $row['id'] . ">" .
-                            $row['nomProjet'] . "<br> </a>";
-                    }
-                } else {
-                    echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
-                }
-
-                //--> Appartient à l'unité <-------------------------------------------------------------------------------------------------------------------------------
-
-                if ($connecte) {
-                    $sql = "SELECT distinct u.id, nomUnite
-                            FROM unite u, uchercheur uc            
-                            WHERE u.id='$valeurIdUnite'";
-
-                    $result = $connecte->query($sql);
-
-                    echo "<p> Appartient à l'unité : <p>";
-
-
-                    // Traitez les résultats ici, par exemple :
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-
-                        echo "<a href=pageUnite.php?idUnite=" . $row['id'] . ">" .
-                            $row['nomUnite'] . "<br> </a>";
-                    }
-                } else {
-                    echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
-                }
 
 
 
