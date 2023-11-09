@@ -71,8 +71,9 @@ require_once("accesDB.php");
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.php">ULB</a></li>
-                    <li><a href="pageUnite.php">A propos</a></li>
+                    <li><a href="pageUnite.php">Unites</a></li>
                     <li><a href="pageProjet.php">Projets</a></li>
+                    <li><a href="pageChercheur.php">Chercheurs</a></li>
                     <li><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -94,7 +95,7 @@ require_once("accesDB.php");
 
                 //-> Accès DB <------------------------------------------------------------------------------------------------------------------------------------------
 
-                connexionDB($connecte);
+                //connexionDB($connecte);
 
                 //$valeurIdProjet = $_GET['idProjet'];
 

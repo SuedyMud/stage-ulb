@@ -70,8 +70,13 @@ require_once("accesDB.php");
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">ULB</a></li>
-                    <li class="active"><a href="pageUnite.php">A propos</a></li>
+
+
+
+                    <li class="active"><a href="pageUnite.php">Unites</a></li>
+
                     <li><a href="pageProjet.php">Projets</a></li>
+                    <li><a href="pageChercheur.php">Chercheurs</a></li>
                     <li><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -95,17 +100,16 @@ require_once("accesDB.php");
 
                 //-> Accès DB <--------------------------------------------------------------------------------------------------------------------------------------------
 
-                connexionDB($connecte);
+                //connexionDB($connecte);
 
                 $valeurIdUnite =  $_GET['idUnite'];
-
 
                 $monFichier = fopen("uniteFile.txt", "w") or die("Error impossible d'ouvrir le fichier!");
 
                 //-> Détaillé info unité <--------------------------------------------------------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT id, nomUnite, description 
+                    $sql = "SELECT id as numUnite, nomUnite, description 
                             FROM unite 
                             WHERE id='$valeurIdUnite'";
 
@@ -113,22 +117,26 @@ require_once("accesDB.php");
 
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        $txt = "(Code : " . $row['id'] . ")" . "\n" .
-                            strip_tags($row['nomUnite']) . " \n" .
-                            strip_tags($row['description']) . " \n";
+                        echo "(Code : " . $row['numUnite'] . ")" . "<br>" .
+                            $row['nomUnite'] . " <br> <br>" .
+                            "Description : <br>" . $row['description'] . " <br><br>";
 
-                        echo $txt;
-                        fwrite($monFichier, $txt);
+
+                        fwrite($monFichier, $row['numUnite']  . "\n");
+                        fwrite($monFichier, $row['nomUnite'] .  "\n");
+                        fwrite($monFichier, $row['description'] .  "\n");
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
                 }
 
+                fwrite($monFichier, "\n");
+
 
                 //-> Responsable de l'unité <-------------------------------------------------------------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT c.id as numChercheur, c.nom, c.prenom, pc.idProjet
+                    $sql = "SELECT c.id as numChercheur, c.nom, c.prenom, pc.idProjet as numProjet
                             FROM uchercheur uc, chercheur c, uprojet up, pchercheur pc
                             WHERE pc.resp='responsable' 
                             
@@ -138,7 +146,7 @@ require_once("accesDB.php");
 
                                 AND up.idUnite = '$valeurIdUnite'
 
-                    GROUP BY c.id, c.nom, c.prenom ";
+                            GROUP BY c.id, c.nom, c.prenom ";
 
 
                     $result = $connecte->query($sql);
@@ -154,18 +162,17 @@ require_once("accesDB.php");
                     //print_r($result->fetch(PDO::FETCH_ASSOC));
 
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<a href=pageChercheur.php?idChercheur=" . $row['numChercheur'] . "&idUnite=" . $valeurIdUnite . "&idProjet=" . $row['idProjet'] . ">" .
-                            $row['nom'] . " " . $row['prenom'] . " </a>" . " \n";
+                        echo "<a href=pageChercheur.php?idChercheur=" . $row['numChercheur'] . "&idUnite=" . $valeurIdUnite . "&idProjet=" . $row['numProjet'] . ">" .
+                            $row['nom'] . " " . $row['prenom'] . " <br> </a>" . " \n";
 
-                        fwrite($monFichier, $row['numChercheur']);
-
-                        fwrite($monFichier, $valeurIdUnite);
-                        fwrite($monFichier, $row['idProjet']);
-                        echo "\n";
+                        fwrite($monFichier, $row['nom']);
+                        fwrite($monFichier, $row['prenom'] . "\n");
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
                 }
+
+                fwrite($monFichier, "\n");
 
 
                 //-> les projets <----------------------------------------------------------------------------------------------------------------------------------------- 
@@ -195,31 +202,21 @@ require_once("accesDB.php");
                             $row['nomProjet']  . "<br></a>";
 
 
-                        fwrite($monFichier, $row["id"]);
-                        fwrite($monFichier, $valeurIdUnite);
-                        echo "\n";
+                        fwrite($monFichier,  $row['nomProjet'] . "\n");
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
                 }
 
-
-                /*"SELECT distinct c.id as numChercheur, c.nom, c.prenom, pc.idProjet
-                            FROM uchercheur uc, chercheur c, uprojet up, pchercheur pc
-                            WHERE pc.resp='responsable' 
-                            
-                                AND pc.idChercheur=c.id //pour le nom prénom 
-
-                                AND pc.idProjet=up.idProjet
-
-                                AND up.idUnite = '$valeurIdUnite' ";*/
+                fwrite($monFichier, "\n");
 
 
-                //->les chercheurs qui y travailles <--------------------------------------------------------------------------------------------------------------------- 
+
+                //-> les chercheurs qui y travailles <--------------------------------------------------------------------------------------------------------------------- 
 
                 if ($connecte) {
 
-                    $sql = "SELECT c.id as numchercheur, c.nom , c.prenom, pc.idProjet
+                    $sql = "SELECT c.id as numchercheur, c.nom , c.prenom, pc.idProjet as numProjet
                             FROM uchercheur uc, chercheur c, uprojet up, pchercheur pc
                             WHERE pc.resp=''
                                 
@@ -242,20 +239,14 @@ require_once("accesDB.php");
                     }
 
 
-                    // echo "<a href=pageChercheur.php?idChercheur=" . $row['numChercheur'] . "&idUnite=" . $valeurIdUnite . "&idProjet=" . $row['idProjet'] . ">" .
-                    //     $row['nom'] . " " . $row['prenom'] . " </a>" . " \n";
-
-
-
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo  "<a href=pageChercheur.php?idChercheur=" . $row['numchercheur']  . "&idUnite=" . $valeurIdUnite . "&idProjet=" . $row['idProjet'] . ">" .
+                        echo  "<a href=pageChercheur.php?idChercheur=" . $row['numchercheur']  . "&idUnite=" . $valeurIdUnite . "&idProjet=" . $row['numProjet'] . ">" .
                             $row['nom'] . " " . $row['prenom'] . "<br> </a>";
 
 
-                        fwrite($monFichier, $row['numchercheur']);
-                        fwrite($monFichier, $valeurIdUnite);
-                        echo "\n";
+                        fwrite($monFichier, $row['nom']);
+                        fwrite($monFichier, $row['prenom'] . "\n");
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";

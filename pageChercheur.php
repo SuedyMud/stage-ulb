@@ -71,9 +71,10 @@ require_once("accesDB.php");
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.php">ULB</a></li>
-                    <li><a href="pageUnite.php">A propos</a></li>
+                    <li><a href="index.php">ULB</a></li>
+                    <li><a href="pageUnite.php">Unites</a></li>
                     <li><a href="pageProjet.php">Projets</a></li>
+                    <li class="active"><a href="pageChercheur.php">Chercheurs</a></li>
                     <li><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -98,11 +99,10 @@ require_once("accesDB.php");
 
                 //-> Accès DB <---------------------------------------------------------------------------------------------------------------------------------------
 
-                connexionDB($connecte);
+                //connexionDB($connecte);
 
                 $valeurIdChercheur = $_GET['idChercheur'];
                 $valeurIdProjet = $_GET['idProjet'];
-                $valeurIdUnite = $_GET['idUnite'];
 
 
                 //--> affichage des informations détaillé du chercheur <------------------------------------------------------------------------------------------------
@@ -131,9 +131,11 @@ require_once("accesDB.php");
                 //--> Appartient au projet <-------------------------------------------------------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT distinct p.id, p.nomProjet
+                    $sql = "SELECT p.id as numProjet, p.nomProjet
                             FROM projet p, pchercheur pc 
-                            WHERE p.id = '$valeurIdProjet'";
+                            WHERE p.id = pc.idProjet
+                            
+                                AND pc.idChercheur = '$valeurIdChercheur'";
 
                     $result = $connecte->query($sql);
 
@@ -143,7 +145,7 @@ require_once("accesDB.php");
                     // Traitez les résultats ici, par exemple :
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo "<a href=pageProjet.php?idProjet=" . $row['id'] . ">" .
+                        echo "<a href=pageProjet.php?idProjet=" . $row['numProjet'] . ">" .
                             $row['nomProjet'] . "<br> </a>";
                     }
                 } else {
@@ -153,9 +155,11 @@ require_once("accesDB.php");
                 //--> Appartient à l'unité <-------------------------------------------------------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT distinct u.id, nomUnite
+                    $sql = "SELECT u.id as numUnite, u.nomUnite
                             FROM unite u, uchercheur uc            
-                            WHERE u.id='$valeurIdUnite'";
+                            WHERE u.id=uc.idUnite
+
+                                AND uc.idChercheur = '$valeurIdChercheur'";
 
                     $result = $connecte->query($sql);
 
@@ -165,13 +169,12 @@ require_once("accesDB.php");
                     // Traitez les résultats ici, par exemple :
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo "<a href=pageUnite.php?idUnite=" . $row['id'] . ">" .
+                        echo "<a href=pageUnite.php?idUnite=" . $row['numUnite'] . ">" .
                             $row['nomUnite'] . "<br> </a>";
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
                 }
-
 
 
                 ?>

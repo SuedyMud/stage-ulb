@@ -71,8 +71,9 @@ require_once("accesDB.php");
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">ULB</a></li>
-                    <li><a href="pageUnite.php">A propos</a></li>
+                    <li><a href="pageUnite.php">Unites</a></li>
                     <li class="active"><a href="pageProjet.php">Projets</a></li>
+                    <li><a href="pageChercheur.php">Chercheurs</a></li>
                     <li><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -99,7 +100,6 @@ require_once("accesDB.php");
                 //connexionDB($connecte);
 
                 $valeurIdProjet =  $_GET['idProjet'];
-                //$valeurIdUnite = $_GET['idUnite'];
 
 
                 //-> Détaillé info projet <--------------------------------------------------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ require_once("accesDB.php");
                         echo  $row['id'] . "<br> \n" .
                             $row['nomProjet'] . "<br> \n " .
                             date('d/m/Y', strtotime($row['dateDebut'])) . " - " .
-                            date('d/m/Y', strtotime($row['dateFin'])) . "<br> \n " .
+                            date('d/m/Y', strtotime($row['dateFin'])) . "<br> <br>" .
                             "Description : <br> \n " . $row['description'] . "<br><br> \n";
                     }
                 } else {
@@ -126,17 +126,16 @@ require_once("accesDB.php");
 
                 //-> Réponsable du projet <-------------------------------------------------------------------------------------------------------------------------------
 
-
                 if ($connecte) {
-                    $sql = "SELECT c.id, c.nom, c.prenom
-                            FROM pchercheur pc, chercheur c, uchercheur uc  
-                            WHERE pc.idChercheur=c.id 
+                    $sql = "SELECT c.id as numChercheur, c.nom, c.prenom, pc.idProjet as numProjet, uc.idunite as numUnite
+                            FROM pchercheur pc, chercheur c, uprojet up, uchercheur uc  
+                            WHERE pc.resp='responsable' 
                             
-                                AND pc.idProjet='$valeurIdProjet' 
+                                AND pc.idChercheur=c.id 
+                            
+                                AND pc.idProjet= '$valeurIdProjet'
 
-                                AND pc.resp='responsable' 
-                                
-                                and uc.idUnite ='$valeurIdUnite'
+                                AND uc.idUnite =up.idUnite
 
                             GROUP BY c.id, c.nom, c.prenom ";
 
@@ -153,7 +152,7 @@ require_once("accesDB.php");
 
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] .  "&idProjet=" . $valeurIdProjet . "&idUnite=" . $valeurIdUnite .  ">" .
+                        echo "<a href=pageChercheur.php?idChercheur=" . $row['numChercheur'] .  "&idProjet=" . $valeurIdProjet  . "&idUnite=" . $row['numUnite']  .  ">" .
                             $row['nom'] . " " . $row['prenom'] . "<br> </a>";
                     }
                 } else {
@@ -164,11 +163,15 @@ require_once("accesDB.php");
                 //-> Les chercheurs participant au projet) <-----------------------------------------------------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT distinct c.id, c.nom, c.prenom
+                    $sql = "SELECT c.id as numChercheur, c.nom, c.prenom
                             FROM pchercheur pc, chercheur c
-                            WHERE pc.idChercheur=c.id 
-                                    AND pc.idProjet='$valeurIdProjet' 
-                                    AND pc.resp =''";
+                            WHERE pc.resp =''
+                            
+                                AND pc.idChercheur=c.id 
+
+                                AND pc.idProjet='$valeurIdProjet'
+                            
+                            GROUP BY c.id, c.nom, c.prenom";
 
                     $result = $connecte->query($sql);
 
@@ -182,7 +185,7 @@ require_once("accesDB.php");
 
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo "<a href=pageChercheur.php?idChercheur=" . $row['id'] . "&idProjet=" . ">" .
+                        echo "<a href=pageChercheur.php?idChercheur=" . $row['numChercheur'] . "&idProjet=" . ">" .
                             $row['nom'] . " " . $row['prenom'] . "<br> </a>";
                     }
                 } else {
@@ -190,10 +193,10 @@ require_once("accesDB.php");
                 }
 
 
-                //--> affichage personne appartenant à une unité <--------------------------------------------------------------------------------
+                //--> Chercheurs appartenant à une unité <--------------------------------------------------------------------------------
 
                 if ($connecte) {
-                    $sql = "SELECT  u.id, u.nomUnite
+                    $sql = "SELECT  u.id as numChercheur, u.nomUnite
                             FROM unite u, uprojet up               
                             WHERE u.id= up.idUnite 
 
@@ -216,13 +219,12 @@ require_once("accesDB.php");
                     // Traitez les résultats ici, par exemple :
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                        echo "<a href=pageUnite.php?idUnite=" . $row['id'] . ">" .
+                        echo "<a href=pageUnite.php?idUnite=" . $row['numChercheur'] . ">" .
                             $row['nomUnite'] . "<br> </a>";
                     }
                 } else {
                     echo "La connexion à la base de données a échoué, donc la requête SQL n'a pas été exécutée.";
                 }
-
 
 
                 ?>
