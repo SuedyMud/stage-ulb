@@ -1,33 +1,30 @@
 <?php
 
-function connexionDB($connecte)
-{
-    //-> Accès DB <------------------------------------------------------------------------------------------------------------------------------------------
+//-> Accès DB <------------------------------------------------------------------------------------------------------------------------------------------
 
-    // identifiant local ----------------------------------------
-    $servername = "localhost";
-    $database = "ulb";
+// identifiant local ----------------------------------------
+$servername = "localhost";
+$database = "ulb";
 
-    $username = "root";
-    $password = "";
+$username = "root";
+$password = "";
 
 
-    // identifiant Hébergeur -------------------------------------
+// identifiant Hébergeur -------------------------------------
 
-    //$servername = "localhost";
-    //$database = "id21452387_ulb";
+//$servername = "localhost";
+//$database = "id21452387_ulb";
 
-    //$username = "id21452387_suedy";
-    //$password = "Gedeon1996@";
+//$username = "id21452387_suedy";
+//$password = "Gedeon1996@";
 
 
-    try {
-        $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+try {
+    $connecte = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
 
-        // Définir le mode d'erreur PDO sur exception
-        $connecte->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        //echo "Connecté avec succès";
-    } catch (PDOException $e) {
-        echo "La connexion a échoué : " . $e->getMessage();
-    }
+    // Définir le mode d'erreur PDO sur exception
+    $connecte->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //echo "Connecté avec succès";
+} catch (PDOException $e) {
+    echo "La connexion a échoué : " . $e->getMessage();
 }

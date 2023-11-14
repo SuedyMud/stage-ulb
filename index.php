@@ -1,6 +1,52 @@
 <?php
-require_once("library.php");
 require_once("accesDB.php");
+
+
+// Récupération des identifiants d'unités depuis la base de données
+$listeIdUnite = array();
+if ($connecte) {
+    $sql = "SELECT id, nomUnite  
+            FROM unite";
+
+    $result = $connecte->query($sql);
+
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $listeIdUnite[] = $row['id'];
+    }
+} else {
+    echo "La connexion à la base de données a échoué.";
+}
+
+$listeIdProjet = array();
+if ($connecte) {
+    $sql = "SELECT id, nomProjet  
+            FROM projet";
+
+    $result = $connecte->query($sql);
+
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $listeIdProjet[] = $row['id'];
+    }
+} else {
+    echo "La connexion à la base de données a échoué.";
+}
+
+
+$listeIdChercheur = array();
+if ($connecte) {
+    $sql = "SELECT id, nom, prenom 
+            FROM chercheur";
+
+    $result = $connecte->query($sql);
+
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $listeIdChercheur[] = $row['id'];
+    }
+} else {
+    echo "La connexion à la base de données a échoué.";
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +82,7 @@ require_once("accesDB.php");
         }
 
         /* Set black background color, white text and some padding */
+
         footer {
             background-color: #555;
             color: white;
@@ -71,9 +118,63 @@ require_once("accesDB.php");
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.php">ULB</a></li>
-                    <li><a href="pageUnite.php">Unites</a></li>
-                    <li><a href="pageProjet.php">Projets</a></li>
-                    <li><a href="pageChercheur.php">Chercheurs</a></li>
+                    <!-- <li><a href="pageUnite.php">Unites</a></li> -->
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Unités <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            foreach ($listeIdUnite as $idUnite) {
+                                $isActive = isset($_GET['idUnite']) && $_GET['idUnite'] == $idUnite ? 'class="active"' : '';
+                                $sql = "SELECT nomUnite FROM unite WHERE id='$idUnite'";
+                                $result = $connecte->query($sql);
+                                $row = $result->fetch(PDO::FETCH_ASSOC);
+                                $nomUnite = $row['nomUnite'];
+
+                                echo '<li ' . $isActive . '><a href="pageUnite.php?idUnite=' . $idUnite . '"> ' . $nomUnite . '</a></li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+
+
+                    <!-- <li><a href="pageProjet.php">Projets</a></li> -->
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projets <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            foreach ($listeIdProjet as $idProjet) {
+                                $isActive = isset($_GET['idProjet']) && $_GET['idProjet'] == $idProjet ? 'class="active"' : '';
+                                $sql = "SELECT nomProjet FROM projet WHERE id='$idProjet'";
+                                $result = $connecte->query($sql);
+                                $row = $result->fetch(PDO::FETCH_ASSOC);
+                                $nomProjet = $row['nomProjet'];
+
+                                echo '<li ' . $isActive . '><a href="pageProjet.php?idProjet=' . $idProjet . '"> ' . $nomProjet . '</a></li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <!-- <li><a href="pageChercheur.php">Chercheurs</a></li> -->
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chercheurs <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            foreach ($listeIdChercheur as $idChercheur) {
+                                $isActive = isset($_GET['idChercheur']) && $_GET['idChercheur'] == $idChercheur ? 'class="active"' : '';
+                                $sql = "SELECT nom, prenom FROM chercheur WHERE id='$idChercheur'";
+                                $result = $connecte->query($sql);
+                                $row = $result->fetch(PDO::FETCH_ASSOC);
+                                $nom = $row['nom'];
+                                $prenom = $row['prenom'];
+
+                                echo '<li ' . $isActive . '><a href="pageChercheur.php?idChercheur=' . $idChercheur . '"> ' . $nom . " " . $prenom . '</a></li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
                     <li><a href="pageContact.php">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -98,7 +199,6 @@ require_once("accesDB.php");
                 //connexionDB($connecte);
 
                 //$valeurIdProjet = $_GET['idProjet'];
-
 
 
                 //-> unité de recherche <--------------------------------------------------------------------------------------------------------------------------------
@@ -131,16 +231,18 @@ require_once("accesDB.php");
         </div>
     </div>
 
-    <footer class="container-fluid text-center">
 
-        <p>
-            ULB Université libre de bruxelles
-        </p>
-
-    </footer>
 
 
 </body>
+
+<footer class="container-fluid text-center navbar-fixed-bottom">
+
+    <p>
+        ULB Université libre de bruxelles
+    </p>
+
+</footer>
 
 
 </html>
