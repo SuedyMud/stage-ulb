@@ -64,30 +64,75 @@ if ($connecte) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
+
+        /* les onglets en hauteur */
         .navbar {
             margin-bottom: 0;
             border-radius: 0;
+            background-color: #22427C;
         }
 
+        .active a {
+            background-color: #03224C !important;
+            /* Changez la couleur ici selon votre préférence */
+        }
+
+
+        .navbar-logo {
+            position: absolute;
+            bottom: 2px;
+            /* left: 1px; */
+            /* width: 50px; */
+
+        }
+
+        .navbar-logo img {
+            width: 160px;
+            /* Taille du logo */
+        }
+
+
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+
+        /* menu unité de recherche */
         .row.content {
-            height: 450px
+            height: 450px;
+
         }
 
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
-            background-color: #f1f1f1;
+            background-color: white;
             height: 100%;
         }
 
         /* Set black background color, white text and some padding */
 
         footer {
-            background-color: #555;
+            background-color: #03224C;
             color: white;
-            padding: 15px;
+            padding: 30px;
         }
+
+        footer-content {
+            display: flex;
+        }
+
+        .footer-content p {
+            position: absolute;
+            bottom: 15px;
+            left: 90px;
+
+        }
+
+        .footer-content img {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            width: 60px;
+        }
+
 
         /* On small screens, set height to 'auto' for sidenav and grid */
         @media screen and (max-width: 767px) {
@@ -107,21 +152,30 @@ if ($connecte) {
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
+
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 <a class="navbar-brand" href=""></a>
             </div>
+
+
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.php">ULB</a></li>
+                    <li class="navbar-logo">
+                        <a href="index.php">
+                            <img src="logo_ulb_n3.png" alt="Logo ULB">
+                        </a>
+                    </li>
                     <!-- <li><a href="pageUnite.php">Unites</a></li> -->
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Unités <span class="caret"></span></a>
+                        <a href="pageUnite.php" class="dropdown-toggle" data-toggle="dropdown">Unités <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <?php
                             foreach ($listeIdUnite as $idUnite) {
@@ -141,7 +195,7 @@ if ($connecte) {
                     <!-- <li><a href="pageProjet.php">Projets</a></li> -->
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projets <span class="caret"></span></a>
+                        <a href="pageProjet.php" class="dropdown-toggle" data-toggle="dropdown">Projets <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <?php
                             foreach ($listeIdProjet as $idProjet) {
@@ -159,7 +213,7 @@ if ($connecte) {
                     <!-- <li><a href="pageChercheur.php">Chercheurs</a></li> -->
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chercheurs <span class="caret"></span></a>
+                        <a href="pageChercheur.php" class="dropdown-toggle" data-toggle="dropdown">Chercheurs <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <?php
                             foreach ($listeIdChercheur as $idChercheur) {
@@ -238,10 +292,10 @@ if ($connecte) {
 
 <footer class="container-fluid text-center navbar-fixed-bottom">
 
-    <p>
-        ULB Université libre de bruxelles
-    </p>
-
+    <div class="footer-content">
+        <img src="logo-ulb.png" alt="Logo ULB">
+        <p>Université libre de bruxelles</p>
+    </div>
 </footer>
 
 

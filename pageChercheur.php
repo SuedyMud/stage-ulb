@@ -64,29 +64,75 @@ if ($connecte) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
+
+        /* les onglets en hauteur */
         .navbar {
             margin-bottom: 0;
             border-radius: 0;
+            background-color: #22427C;
         }
 
+        .active a {
+            background-color: #03224C !important;
+            /* Changez la couleur ici selon votre préférence */
+        }
+
+
+        .navbar-logo {
+            position: absolute;
+            bottom: 2px;
+            /* left: 1px; */
+            /* width: 50px; */
+
+        }
+
+        .navbar-logo img {
+            width: 160px;
+            /* Taille du logo */
+        }
+
+
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+
+        /* menu unité de recherche */
         .row.content {
-            height: 450px
+            height: 450px;
+
         }
 
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
-            background-color: #f1f1f1;
+            background-color: white;
             height: 100%;
         }
 
         /* Set black background color, white text and some padding */
+
         footer {
-            background-color: #555;
+            background-color: #03224C;
             color: white;
-            padding: 15px;
+            padding: 30px;
         }
+
+        footer-content {
+            display: flex;
+        }
+
+        .footer-content p {
+            position: absolute;
+            bottom: 15px;
+            left: 90px;
+
+        }
+
+        .footer-content img {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            width: 60px;
+        }
+
 
         /* On small screens, set height to 'auto' for sidenav and grid */
         @media screen and (max-width: 767px) {
@@ -116,7 +162,12 @@ if ($connecte) {
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">ULB</a></li>
+                    <li class="navbar-logo">
+                        <a href="index.php">
+                            <img src="logo_ulb_n3.png" alt="Logo ULB">
+                        </a>
+                    </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Unités <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -194,12 +245,9 @@ if ($connecte) {
 
                 <?php
 
-                //-> Accès DB <---------------------------------------------------------------------------------------------------------------------------------------
-
-                //connexionDB($connecte);
+                //-> Accès DB <-----------------------------------------------------------------------------------------------------------------------------------------
 
                 $valeurIdChercheur = $_GET['idChercheur'];
-                //jhgfvdcxpo    +/NBVC$valeurIdProjet = $_GET['idProjet'];
 
 
                 //--> affichage des informations détaillé du chercheur <------------------------------------------------------------------------------------------------
@@ -211,7 +259,7 @@ if ($connecte) {
 
                     $result = $connecte->query($sql);
 
-                    echo "<p> Données Personnelle du chercheur : <p>";
+                    echo "<p> Détails du chercheur : <p>";
 
 
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -237,10 +285,14 @@ if ($connecte) {
 
                     $result = $connecte->query($sql);
 
-                    echo "<p> Appartient au projet : <p>";
+                    $cptProjet = $result->rowCount();
 
+                    if ($cptProjet == 1) {
+                        echo "<p> Appartient au projet : <p>";
+                    } else {
+                        echo "<p> Appartient aux projets : <p>";
+                    }
 
-                    // Traitez les résultats ici, par exemple :
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
                         echo "<a href=pageProjet.php?idProjet=" . $row['numProjet'] . ">" .
@@ -268,6 +320,7 @@ if ($connecte) {
                     if ($cptChercheurs == 1) {
                         echo "<p> Appartient à l'unité : <p>";
                     } else {
+                        echo "<p> Appartient aux unités : <p>";
                     }
 
 
@@ -300,6 +353,7 @@ if ($connecte) {
                     if ($cptResponsable == 1) {
                         echo "<p> Responsable de l'unité : <p>";
                     } else {
+                        echo "<p> Responsable des unités : <p>";
                     }
 
 
@@ -334,10 +388,10 @@ if ($connecte) {
 
 <footer class="container-fluid text-center navbar-fixed-bottom">
 
-    <p>
-        ULB Université libre de bruxelles
-    </p>
-
+    <div class="footer-content">
+        <img src="logo-ulb.png" alt="Logo ULB">
+        <p>Université libre de bruxelles</p>
+    </div>
 </footer>
 
 </html>
